@@ -16,9 +16,14 @@ instead. This page links to the repository, not to a running instance.
 
 ## Turning it on
 
-Once the workflow has run, enable Pages in the repository settings under
-**Settings → Pages**, with **Source** set to **GitHub Actions**. The page then
-publishes at `https://anny320.github.io/Shambas/`.
+Nothing to do by hand. The workflow enables Pages itself on its first run
+(`configure-pages` with `enablement: true`), and the page publishes at
+`https://anny320.github.io/Shambas/`.
+
+Only the repository's **default branch** publishes. The workflow reads that
+from the repository rather than hard-coding a branch name, so renaming the
+default branch to `main` later will not break it. A push to any other branch
+that touches `site/` is skipped rather than overwriting the live page.
 
 ## Editing it
 

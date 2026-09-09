@@ -5,7 +5,11 @@ name: Deploy landing page
 # database, so it belongs on Vercel.
 on:
   push:
-    branches: [main]
+    # Deliberately no branch filter. The deploy job below gates on the
+    # repository's own default branch instead, so this keeps working if the
+    # default branch is ever renamed — hard-coding "main" here meant the
+    # workflow never fired at all while the default branch was named
+    # something else.
     paths:
       - 'site/**'
       - '.github/workflows/pages.yml'
@@ -23,15 +27,25 @@ concurrency:
 
 jobs:
   deploy:
+    # Only the default branch publishes. A push to a feature branch that
+    # touches site/ is skipped rather than overwriting the live page.
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/configure-pages@v5
+        with:
+          # Turns Pages on for the repository if it is not already, so there
+          # is no manual settings step before the first deploy.
+          enablement: true
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
       - id: deployment
         uses: actions/deploy-pages@v4
