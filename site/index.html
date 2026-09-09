@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shamba Score — credit scoring for smallholder farmers</title>
+<meta name="description" content="A B2B credit and insurance risk scoring engine for smallholder farmers, built on satellite, weather and mobile-money data. Kenya first.">
+<meta property="og:title" content="Shamba Score">
+<meta property="og:description" content="Credit and insurance risk scoring for smallholder farmers, for the institutions that lend to them.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --ink: #2b2419;
+    --muted: #55483a;
+    --line: #e4ded4;
+    --leaf: #276033;
+    --leaf-bright: #3f8f4f;
+    --leaf-wash: #eef5ef;
+    --amber: #8a6d1f;
+    --amber-wash: #fdf6e3;
+    --maxw: 68rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16130f;
+      --surface: #1f1b16;
+      --ink: #f0ebe3;
+      --muted: #b8ac9c;
+      --line: #322c24;
+      --leaf: #7cc98c;
+      --leaf-bright: #9bd9a8;
+      --leaf-wash: #1c2a1f;
+      --amber: #d9bd74;
+      --amber-wash: #2a2416;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+
+  a { color: var(--leaf); }
+
+  h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; margin: 0; }
+
+  /* ---------------------------------------------------------------- header */
+
+  header.top {
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  header.top .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+  .brand { font-weight: 650; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
+  .brand span { color: var(--leaf-bright); }
+  nav.top-nav { display: flex; gap: 1.25rem; font-size: 0.9rem; }
+  nav.top-nav a { color: var(--muted); text-decoration: none; }
+  nav.top-nav a:hover { color: var(--ink); }
+  @media (max-width: 34rem) { nav.top-nav a.hide-sm { display: none; } }
+
+  /* ------------------------------------------------------------------ hero */
+
+  .hero { padding: 4.5rem 0 3rem; }
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--leaf);
+    background: var(--leaf-wash);
+    border-radius: 999px;
+    padding: 0.3rem 0.7rem;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 20ch; }
+  .hero p.lede {
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    color: var(--muted);
+    max-width: 60ch;
+    margin: 1.25rem 0 0;
+  }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
+  .btn {
+    display: inline-block;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.15rem;
+    font-size: 0.95rem;
+    font-weight: 550;
+    text-decoration: none;
+    border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--leaf); color: #fff; }
+  .btn-primary:hover { background: var(--leaf-bright); }
+  @media (prefers-color-scheme: dark) { .btn-primary { color: #102014; } }
+  .btn-ghost { border-color: var(--line); color: var(--ink); background: var(--surface); }
+  .btn-ghost:hover { border-color: var(--muted); }
+
+  /* ------------------------------------------------------------- statboard */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin: 3rem 0 0;
+  }
+  .stat { background: var(--surface); padding: 1.4rem 1.25rem; }
+  .stat b {
+    display: block;
+    font-size: 1.9rem;
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat span { display: block; font-size: 0.87rem; color: var(--muted); margin-top: 0.3rem; }
+
+  /* --------------------------------------------------------------- section */
+
+  section {
+    padding: 3.5rem 0;
+    /* The header is sticky, so an anchor jump would otherwise land with the
+       section heading hidden underneath it. */
+    scroll-margin-top: 4rem;
+  }
+  section > .wrap > h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); }
+  .section-lede { color: var(--muted); max-width: 62ch; margin: 0.9rem 0 0; }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    padding: 1.4rem;
+  }
+  .card h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
+  .card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+  .card .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.7rem;
+    height: 1.7rem;
+    border-radius: 999px;
+    background: var(--leaf-wash);
+    color: var(--leaf);
+    font-size: 0.85rem;
+    font-weight: 650;
+    margin-bottom: 0.85rem;
+  }
+
+  /* ----------------------------------------------------------- signal grid */
+
+  table.signals {
+    width: 100%;
+    /* Without a floor the columns squeeze to nothing on a phone instead of
+       letting the wrapper scroll. */
+    min-width: 40rem;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.94rem;
+  }
+  .table-scroll {
+    overflow-x: auto;
+    /* Keeps the scrollable region visually attached to the section. */
+    margin-inline: -0.25rem;
+    padding-inline: 0.25rem;
+  }
+  table.signals th, table.signals td {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  table.signals th {
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  table.signals td:first-child { font-weight: 550; white-space: nowrap; }
+  table.signals tr:last-child td { border-bottom: 0; }
+  .pill {
+    display: inline-block;
+    font-size: 0.74rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill-live { background: var(--leaf-wash); color: var(--leaf); }
+  .pill-mock { background: var(--amber-wash); color: var(--amber); }
+
+  /* -------------------------------------------------------------- emphasis */
+
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--leaf);
+    border-radius: 0.5rem;
+    padding: 1.4rem 1.5rem;
+    margin-top: 2rem;
+  }
+  .callout h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
+  .callout p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+  .callout p + p { margin-top: 0.75rem; }
+
+  .band { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  ul.plain { margin: 1.5rem 0 0; padding: 0; list-style: none; }
+  ul.plain li {
+    padding-left: 1.6rem;
+    position: relative;
+    margin-bottom: 0.85rem;
+    color: var(--muted);
+  }
+  ul.plain li::before {
+    content: "";
+    position: absolute;
+    left: 0.35rem;
+    top: 0.62rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--leaf-bright);
+  }
+  ul.plain li b { color: var(--ink); font-weight: 600; }
+
+  /* ---------------------------------------------------------------- footer */
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 2.5rem 0 3.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+  }
+  footer p { margin: 0 0 0.6rem; }
+  footer a { color: var(--leaf); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top">Shamba<span> Score</span></a>
+    <nav class="top-nav">
+      <a href="#how" class="hide-sm">How it works</a>
+      <a href="#signals" class="hide-sm">Signals</a>
+      <a href="#explainable">Explainability</a>
+      <a href="https://github.com/anny320/Shambas">Code</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <div class="wrap hero">
+    <span class="eyebrow">B2B decisioning · Kenya first</span>
+    <h1>Make an unscoreable farmer scoreable in minutes.</h1>
+    <p class="lede">
+      Smallholder farmers are locked out of credit because they have no formal
+      credit history and no collateral, so lenders treat them as unscoreable
+      and stay away. Shamba Score builds a risk profile from satellite,
+      weather and mobile-money data instead, and returns a score, a default
+      probability, recommended loan terms and a plain-language explanation.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/anny320/Shambas">Read the code</a>
+      <a class="btn btn-ghost" href="https://github.com/anny320/Shambas/blob/main/docs/scoring-model.md">How the model works</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <b>~70%</b>
+        <span>of Kenya's farmers are smallholders</span>
+      </div>
+      <div class="stat">
+        <b>~⅓</b>
+        <span>of Kenyan GDP comes from agriculture</span>
+      </div>
+      <div class="stat">
+        <b>~$65B</b>
+        <span>estimated smallholder finance gap across Africa</span>
+      </div>
+      <div class="stat">
+        <b>&lt; 2 min</b>
+        <span>target time to a decision, against days by hand</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>We are not a lender.</h2>
+      <p class="section-lede">
+        Shamba Score is the decisioning layer that licensed institutions use.
+        They hold the risk, the capital and the licence. We sell the brain, not
+        the balance sheet — which is what keeps the heaviest regulation with
+        our customers and makes the product buildable by a small team.
+      </p>
+      <p class="section-lede">
+        The paying customer is the institution: a microfinance lender, a SACCO,
+        an agri-input dealer or an insurer. It monetises the transaction it can
+        now safely make. The farmer, who would not pay for information, does
+        not have to.
+      </p>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <h2>How it works</h2>
+      <p class="section-lede">
+        Three steps, all of which a loan officer can complete on a phone in the
+        field.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <span class="num">1</span>
+          <h3>Capture the farmer and the farm</h3>
+          <p>
+            Name, phone, crop, hectarage, and the farm pinned on a map.
+            Explicit consent is recorded with a timestamp before anything is
+            processed. No national ID and no account numbers are collected, by
+            design.
+          </p>
+        </div>
+        <div class="card">
+          <span class="num">2</span>
+          <h3>Gather alternative data</h3>
+          <p>
+            Satellite vegetation over the plot, rainfall history for the
+            location, and — where the farmer authorises it — a summary of
+            mobile-money activity. Each source sits behind one interface, so
+            any of them can be swapped or go dark without breaking the rest.
+          </p>
+        </div>
+        <div class="card">
+          <span class="num">3</span>
+          <h3>Return a decision the officer can defend</h3>
+          <p>
+            A score, a default probability, a recommended amount and term, a
+            confidence level, and the specific factors that drove the result —
+            each in one plain sentence, with the points it contributed.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="signals" class="band">
+    <div class="wrap">
+      <h2>The signals</h2>
+      <p class="section-lede">
+        Everything runs end to end on mock data today, so the product exists
+        before any partnership or API key does. Sources go live one at a time,
+        behind the same interface.
+      </p>
+
+      <div class="table-scroll">
+        <table class="signals">
+          <thead>
+            <tr>
+              <th scope="col">Signal</th>
+              <th scope="col">Source</th>
+              <th scope="col">What it tells us</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vegetation</td>
+              <td>Sentinel-2 NDVI</td>
+              <td>Whether this farm is producing well <em>for its region</em>, and which way it is trending</td>
+              <td><span class="pill pill-mock">Mocked</span></td>
+            </tr>
+            <tr>
+              <td>Rainfall</td>
+              <td>CHIRPS history, Open-Meteo live</td>
+              <td>How dependable rain is here, and how many of the last five seasons failed</td>
+              <td><span class="pill pill-mock">Mocked</span></td>
+            </tr>
+            <tr>
+              <td>Mobile money</td>
+              <td>M-Pesa, with consent</td>
+              <td>How regular income is, what it amounts to, and whether a buffer is held</td>
+              <td><span class="pill pill-mock">Mocked</span></td>
+            </tr>
+            <tr>
+              <td>Farm profile</td>
+              <td>Captured by the loan officer</td>
+              <td>Crop, hectarage and location — the only data the farmer supplies</td>
+              <td><span class="pill pill-live">Live</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <h3>The two honest gaps</h3>
+        <p>
+          Mobile-money behaviour and real repayment outcomes are not publicly
+          available anywhere. Both are mocked today and become real only through
+          a pilot institution and consented farmers. That is the cold-start
+          reality of this problem, not a shortcut around it.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="explainable">
+    <div class="wrap">
+      <h2>Explainable enough to underwrite on</h2>
+      <p class="section-lede">
+        At launch there is no labelled repayment data, so there is nothing to
+        train on — a model fitted to zero observed defaults would be a black box
+        that had learnt nothing. The first version is a transparent,
+        expert-weighted model instead: every weight is visible, arguable and
+        tunable, and every score traces back to the inputs that produced it.
+      </p>
+
+      <ul class="plain">
+        <li>
+          <b>Missing data is never quietly treated as good news.</b> A gap is
+          filled at no better than a conservative anchor, it lowers the
+          confidence shown to the officer, and it caps the size of any offer.
+        </li>
+        <li>
+          <b>Withholding a signal can never improve the outcome.</b> The risk
+          band never gets better and the recommended amount never gets larger,
+          so there is nothing to gain by hiding your weakest evidence.
+        </li>
+        <li>
+          <b>Never having borrowed is not the same as having borrowed badly.</b>
+          A farmer with no credit history is not scored as though they repaid
+          poorly. That distinction is the whole point of a thin-file model.
+        </li>
+        <li>
+          <b>Every decision is auditable.</b> The full set of inputs is stored
+          alongside the result, with the model version and who decided, so an
+          assessment can be reconstructed months later.
+        </li>
+        <li>
+          <b>A recommendation can be "decide this by hand".</b> When the
+          evidence is too thin or the risk too high, the model declines to
+          suggest terms rather than inventing a number.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>Who it is for</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Microfinance lenders and SACCOs</h3>
+          <p>
+            Approve a larger share of smallholder applications without loosening
+            standards, and cut assessment from days to minutes.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Agri-input dealers</h3>
+          <p>
+            Run a fast creditworthiness check at the point of sale, so seed and
+            fertiliser can be offered on pay-later terms.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Insurers</h3>
+          <p>
+            Price parametric weather-index cover for smallholders off the same
+            rainfall signals that drive the credit score.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>Where the project actually is</h2>
+      <p class="section-lede">
+        Being straight about this matters more than the pitch. Shamba Score is
+        in active development. There is no pilot institution, no live external
+        data source and no lending yet.
+      </p>
+      <ul class="plain">
+        <li><b>Built:</b> multi-tenant accounts with database-enforced isolation, farmer and application intake with recorded consent, the pluggable data-adapter layer with mock sources, and the scoring engine with its explanation panel.</li>
+        <li><b>Next:</b> the approve and decline flow with its audit snapshot, a portfolio view, and the first live data source.</li>
+        <li><b>Then:</b> repayment-outcome capture, which is what eventually makes a trained model possible.</li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/anny320/Shambas">Browse the repository</a>
+        <a class="btn btn-ghost" href="https://github.com/anny320/Shambas/blob/main/PRD.md">Read the product spec</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>
+      Shamba Score is a decisioning tool for licensed institutions. It is not a
+      lender, does not hold risk, and does not provide credit to individuals.
+    </p>
+    <p>
+      Figures on this page are published estimates for the sector, not
+      measurements of this product. "Shamba" is Swahili for farm.
+    </p>
+    <p>
+      <a href="https://github.com/anny320/Shambas">Source</a> ·
+      <a href="https://github.com/anny320/Shambas/blob/main/docs/scoring-model.md">Scoring model</a> ·
+      <a href="https://github.com/anny320/Shambas/blob/main/PRD.md">Product spec</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>

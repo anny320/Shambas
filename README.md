@@ -22,6 +22,10 @@ and `PRD.md` for the full product spec.
 
 Everything runs end to end on mock adapters. No external API keys are needed.
 
+A static marketing one-pager lives in [`site/`](site/) and publishes to GitHub
+Pages. The app itself is not deployed there: Pages serves static files only,
+and Shamba Score needs a server for auth, the database and scoring.
+
 ## Local setup
 
 You need Node 18 or newer and a free Supabase project.
