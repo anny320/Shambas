@@ -60,24 +60,27 @@ In the dashboard, go to **Project Settings → Data API** and copy:
 
 ### 4. Run the migrations
 
-Two files in `supabase/migrations`, applied **in filename order**. The first
-builds the schema and all the Row Level Security policies; the second adds the
-`scores` table.
+Add your database connection string to `.env.local` as `SUPABASE_DB_URL`.
+Dashboard: **Project Settings → Database → Connection string**. Take the
+direct connection or the **session** pooler — the transaction pooler cannot
+run the statements these migrations need. It contains your database password,
+so it stays on your machine.
 
-**Simplest — the dashboard.** Open **SQL Editor → New query**, paste the whole
-of `20260909150000_init.sql`, run it, then do the same for
-`20260909160000_scores.sql`. Order matters: the second depends on the first.
-
-**Or the CLI**, if you would rather not paste:
+Then:
 
 ```bash
-npx supabase login
-npx supabase link --project-ref <your-project-ref>
-npx supabase db push
+npm run db:migrate
 ```
 
-The project ref is the subdomain of your project URL, so for
-`https://abcdefghijkl.supabase.co` it is `abcdefghijkl`.
+That applies both files in order and records what it applied, so it is safe to
+re-run. `npm run db:status` shows what is pending without changing anything.
+Each file runs in its own transaction, so a failure rolls that file back
+completely rather than leaving the schema half-built.
+
+If you would rather not use the script, paste
+`supabase/migrations/20260909150000_init.sql` into the dashboard SQL editor,
+run it, then do the same with `20260909160000_scores.sql`. Order matters: the
+second depends on the first.
 
 Do **not** apply anything from `supabase/tests`. That directory contains a
 local stand-in for parts of Supabase that your project already has, and
@@ -138,6 +141,8 @@ first sign-in.
 | `npm run typecheck` | TypeScript, strict, no emit |
 | `npm run lint` | ESLint (flat config; `next lint` no longer exists in Next 16) |
 | `npm test` | Unit tests for scoring, adapters and validation |
+| `npm run db:migrate` | Apply pending SQL migrations to the database in `SUPABASE_DB_URL` |
+| `npm run db:status` | Show which migrations are applied and which are pending |
 | `./supabase/tests/run.sh` | Row Level Security isolation test against a real Postgres |
 
 ## How it is put together
