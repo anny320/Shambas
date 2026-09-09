@@ -78,7 +78,7 @@ their email, and the invite is claimed automatically on their first sign-in.
 | `npm run build` | Production build |
 | `npm run start` | Serve a production build |
 | `npm run typecheck` | TypeScript, strict, no emit |
-| `npm run lint` | ESLint |
+| `npm run lint` | ESLint (flat config; `next lint` no longer exists in Next 16) |
 | `npm test` | Unit tests for scoring, adapters and validation |
 | `./supabase/tests/run.sh` | Row Level Security isolation test against a real Postgres |
 
@@ -105,6 +105,9 @@ trivially testable today and swappable for a trained model later.
 **Isolation lives in the database, not the queries.** Application code does not
 filter by `institution_id`. Row Level Security does it, so a forgotten filter
 cannot leak one institution's farmers to another. `supabase/tests` proves it.
+
+How the scoring model works, and how it handles missing data, is written up in
+[`docs/scoring-model.md`](docs/scoring-model.md).
 
 ## Data protection
 

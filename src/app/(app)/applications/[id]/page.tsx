@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { StatusBadge } from '@/components/status-badge';
-import type { ApplicationWithFarmer } from '@/lib/types/database';
+import { ScorePanel } from '@/components/score-panel';
+import { ScoreButton } from './score-button';
+import type { ApplicationWithFarmer, ScoreRow } from '@/lib/types/database';
 
 const dateTimeFormat = new Intl.DateTimeFormat('en-KE', {
   dateStyle: 'medium',
@@ -29,6 +31,18 @@ export default async function ApplicationDetailPage({
     .overrideTypes<ApplicationWithFarmer>();
 
   if (!data) notFound();
+
+  // Scores are kept rather than overwritten, so the most recent one is the
+  // current assessment and the rest are history.
+  const { data: latestScore } = await supabase
+    .from('scores')
+    .select('*')
+    .eq('application_id', id)
+    .order('scored_at', { ascending: false })
+    .limit(1)
+    .maybeSingle<ScoreRow>();
+
+  const decided = data.status === 'approved' || data.status === 'declined';
 
   return (
     <div>
@@ -80,6 +94,25 @@ export default async function ApplicationDetailPage({
           </dd>
         </div>
       </dl>
+
+      <div className="mt-6 space-y-6">
+        {!decided && (
+          <ScoreButton
+            applicationId={data.id}
+            alreadyScored={latestScore !== null}
+          />
+        )}
+
+        {latestScore ? (
+          <ScorePanel score={latestScore} />
+        ) : (
+          <p className="text-sm text-soil-700">
+            Not scored yet. Running a score gathers satellite, rainfall and
+            mobile-money signals for this farm and explains what drove the
+            result.
+          </p>
+        )}
+      </div>
     </div>
   );
 }

@@ -209,6 +209,62 @@ begin
   assert n = 0, 'a recorded decision must not be deletable';
 
   ------------------------------------------------------------------------
+  raise notice '--- scores are isolated and append-only ---';
+  ------------------------------------------------------------------------
+  insert into public.scores
+    (institution_id, application_id, score, band, pd, confidence,
+     confidence_value, recommended_amount, recommended_term_months,
+     factors, warnings, feature_snapshot, model_version, scored_by)
+  values (inst_a, app_a, 712, 'low', 0.08200, 'high', 0.910,
+          25000.00, 6, '[]'::jsonb, '[]'::jsonb,
+          '{"satellite": {"quality": "ok"}}'::jsonb, 'expert-v1.0.0',
+          officer_a);
+
+  update public.scores set score = 850 where application_id = app_a;
+  get diagnostics n = row_count;
+  assert n = 0, 'a recorded score must not be editable';
+
+  delete from public.scores where application_id = app_a;
+  get diagnostics n = row_count;
+  assert n = 0, 'a recorded score must not be deletable';
+
+  -- B cannot see or score into A.
+  perform public.test_login(admin_b);
+  select count(*) into n from public.scores;
+  assert n = 0, 'B must not see A''s scores';
+
+  blocked := false;
+  begin
+    insert into public.scores
+      (institution_id, application_id, score, band, pd, confidence,
+       confidence_value, factors, warnings, feature_snapshot, model_version,
+       scored_by)
+    values (inst_a, app_a, 800, 'very-low', 0.03000, 'high', 0.950,
+            '[]'::jsonb, '[]'::jsonb, '{}'::jsonb, 'expert-v1.0.0', admin_b);
+  exception when others then
+    blocked := true;
+  end;
+  assert blocked, 'B must not write a score against A''s application';
+
+  perform public.test_login(officer_a);
+  select count(*) into n from public.scores;
+  assert n = 1, 'A should see exactly the one score it recorded';
+
+  -- An amount without a term is not a usable recommendation.
+  blocked := false;
+  begin
+    insert into public.scores
+      (institution_id, application_id, score, band, pd, confidence,
+       confidence_value, recommended_amount, factors, warnings,
+       feature_snapshot, model_version, scored_by)
+    values (inst_a, app_a, 700, 'low', 0.09000, 'high', 0.900, 20000,
+            '[]'::jsonb, '[]'::jsonb, '{}'::jsonb, 'expert-v1.0.0', officer_a);
+  exception when others then
+    blocked := true;
+  end;
+  assert blocked, 'a recommended amount must carry a term';
+
+  ------------------------------------------------------------------------
   raise notice '--- consent and terms constraints ---';
   ------------------------------------------------------------------------
   blocked := false;

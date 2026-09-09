@@ -46,8 +46,42 @@ An **AI credit & insurance scoring engine for smallholder farmers**, sold **B2B*
 
 ## Build sequence (see the kickoff file for the detailed prompts)
 
-1. Scaffold + auth + multi-tenant + data model + farmer intake  ← **current**
-2. `DataAdapter` interface + mock adapters
-3. Scoring engine (`score()`) + tests
-4. Explainability panel + decision recording + portfolio view
-5. First live adapter (weather), then P1 items (repayment capture, insurance rec, batch import, SMS)
+1. ~~Scaffold + auth + multi-tenant + data model + farmer intake~~ **done**
+2. ~~`DataAdapter` interface + mock adapters~~ **done**
+3. ~~Scoring engine (`score()`) + tests~~ **done**
+4. Explainability panel + decision recording + portfolio view  ← **next**
+   (a factor-breakdown panel already ships with phase 3; still to build are
+   the approve/decline flow with its input snapshot, and the portfolio view)
+5. First live adapter (weather, via Open-Meteo), then P1 items (repayment
+   capture, insurance rec, batch import, SMS)
+
+## Decisions taken during the build (don't re-litigate)
+
+- **Next 16, React 19, Tailwind 4, Vitest.** The route-gate file is
+  `src/proxy.ts`, not `middleware.ts`: Next 16 renamed the convention.
+  `next lint` was removed, so linting is plain `eslint .` with a flat config.
+- **Isolation lives in the database, not in queries.** Application code does
+  not filter by `institution_id`; RLS does. A forgotten filter must not be
+  able to leak a tenant. `supabase/tests/run.sh` proves this against a real
+  Postgres and must keep passing.
+- **Onboarding without the service role key.** Two SECURITY DEFINER functions,
+  `create_institution()` and `claim_invite()`, are the only way a membership
+  row is created. Nothing at runtime uses the service role key.
+- **Decisions and scores are append-only.** Neither table has an update or
+  delete policy. A recorded assessment cannot be edited through the API.
+- **Scores are kept, not overwritten.** Re-scoring inserts a new row, so the
+  audit trail shows what was known when.
+- **Missing data is substituted conservatively, never skipped.** See
+  `docs/scoring-model.md`. Withholding a signal can never improve the risk
+  band or the recommended amount.
+- **No prior credit is redistributed, not penalised.** It is the ordinary
+  state of a smallholder, not a gap in observation.
+
+## Open policy question for the product owner
+
+When there is no income signal at all, an offer is still made, sized to what
+the farm can absorb and halved. This keeps genuinely thin-file farmers
+reachable, but it means an applicant with poor income could fare better by not
+linking their account. `NO_INCOME_SIGNAL_MULTIPLIER = 0` refuses these
+outright instead. Flagged in `docs/scoring-model.md`; the lender's risk
+appetite should decide it.

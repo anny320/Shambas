@@ -69,6 +69,34 @@ export interface Decision {
   decided_at: string;
 }
 
+export type RiskBandRow =
+  | 'very-low'
+  | 'low'
+  | 'moderate'
+  | 'high'
+  | 'very-high';
+
+export type ConfidenceLevelRow = 'high' | 'medium' | 'low';
+
+export interface ScoreRow {
+  id: string;
+  institution_id: string;
+  application_id: string;
+  score: number;
+  band: RiskBandRow;
+  pd: number;
+  confidence: ConfidenceLevelRow;
+  confidence_value: number;
+  recommended_amount: number | null;
+  recommended_term_months: number | null;
+  factors: unknown;
+  warnings: unknown;
+  feature_snapshot: unknown;
+  model_version: string;
+  scored_by: string;
+  scored_at: string;
+}
+
 /** An application joined to its farmer, as the list and detail views need it. */
 export interface ApplicationWithFarmer extends Application {
   farmer: Pick<
