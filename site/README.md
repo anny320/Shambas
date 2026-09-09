@@ -16,9 +16,19 @@ instead. This page links to the repository, not to a running instance.
 
 ## Turning it on
 
-Nothing to do by hand. The workflow enables Pages itself on its first run
-(`configure-pages` with `enablement: true`), and the page publishes at
-`https://anny320.github.io/Shambas/`.
+One manual step is needed once, and only the repository owner can do it:
+
+1. Go to **Settings → Pages**.
+2. Set **Source** to **GitHub Actions**.
+
+That is all. The workflow cannot do this for you: creating a Pages site
+requires repository administration rights, and the `GITHUB_TOKEN` a workflow
+runs with does not have them. Until it is done, every run fails at the
+`configure-pages` step.
+
+Once Pages is on, the page publishes at `https://anny320.github.io/Shambas/`.
+Enabling it usually kicks off a deployment straight away; if not, run the
+workflow by hand from the **Actions** tab.
 
 Only the repository's **default branch** publishes. The workflow reads that
 from the repository rather than hard-coding a branch name, so renaming the
