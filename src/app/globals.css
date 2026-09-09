@@ -1,0 +1,32 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@theme {
+  --color-soil-50: #f7f5f2;
+  --color-soil-100: #e9e4dc;
+  --color-soil-700: #55483a;
+  --color-soil-900: #2b2419;
+
+  --color-leaf-50: #f0f7f1;
+  --color-leaf-100: #dcedde;
+  --color-leaf-500: #3f8f4f;
+  --color-leaf-600: #337a41;
+  --color-leaf-700: #276033;
+}
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  background-color: var(--color-soil-50);
+  color: var(--color-soil-900);
+}
+
+/*
+ * Leaflet sets its own stacking context; without this the map can paint over
+ * dropdowns and dialogs.
+ */
+.leaflet-container {
+  z-index: 0;
+}
