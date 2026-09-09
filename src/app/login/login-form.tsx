@@ -60,13 +60,16 @@ export function LoginForm() {
     }
   }
 
+  const field =
+    'mt-1.5 w-full rounded-lg border border-ink-200 px-3 py-2.5 text-sm outline-none placeholder:text-ink-300 focus:border-brand-500 focus:ring-4 focus:ring-brand-50';
+
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-4 rounded-xl border border-soil-100 bg-white p-6 shadow-sm"
+      className="space-y-4 rounded-2xl border border-ink-200 bg-white p-6"
     >
       <div>
-        <label htmlFor="email" className="block text-sm font-medium">
+        <label htmlFor="email" className="block text-sm font-semibold">
           Work email
         </label>
         <input
@@ -76,12 +79,12 @@ export function LoginForm() {
           autoComplete="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 w-full rounded-md border border-soil-100 px-3 py-2 text-sm outline-none focus:border-leaf-500 focus:ring-2 focus:ring-leaf-100"
+          className={field}
         />
       </div>
 
       <div>
-        <label htmlFor="password" className="block text-sm font-medium">
+        <label htmlFor="password" className="block text-sm font-semibold">
           Password
         </label>
         <input
@@ -92,20 +95,26 @@ export function LoginForm() {
           autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 w-full rounded-md border border-soil-100 px-3 py-2 text-sm outline-none focus:border-leaf-500 focus:ring-2 focus:ring-leaf-100"
+          className={field}
         />
         {mode === 'signup' && (
-          <p className="mt-1 text-xs text-soil-700">At least 8 characters.</p>
+          <p className="mt-1.5 text-xs text-ink-500">At least 8 characters.</p>
         )}
       </div>
 
       {error && (
-        <p role="alert" className="text-sm text-red-700">
+        <p
+          role="alert"
+          className="rounded-lg bg-danger-50 px-3 py-2 text-sm font-medium text-danger-700"
+        >
           {error}
         </p>
       )}
       {notice && (
-        <p role="status" className="text-sm text-leaf-700">
+        <p
+          role="status"
+          className="rounded-lg bg-brand-50 px-3 py-2 text-sm font-medium text-brand-700"
+        >
           {notice}
         </p>
       )}
@@ -113,7 +122,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-leaf-600 px-3 py-2 text-sm font-medium text-white hover:bg-leaf-700 disabled:opacity-60"
+        className="w-full rounded-lg bg-brand-700 px-3 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:opacity-60"
       >
         {pending
           ? 'Working…'
@@ -129,7 +138,7 @@ export function LoginForm() {
           setError(null);
           setNotice(null);
         }}
-        className="w-full text-center text-sm text-soil-700 underline underline-offset-4"
+        className="w-full text-center text-sm font-medium text-plum-700 underline underline-offset-4 hover:text-plum-800"
       >
         {mode === 'signin'
           ? 'New institution? Create an account'

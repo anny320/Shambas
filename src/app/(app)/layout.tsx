@@ -18,33 +18,49 @@ export default async function AppLayout({
     admin: 'Administrator',
   }[membership.role];
 
+  // First letter of the institution, as a coloured mark. Gives the tenant a
+  // visible identity so a user with access to two never mixes them up.
+  const initial = institution.name.trim().charAt(0).toUpperCase();
+
   return (
-    <div className="min-h-screen">
-      <header className="border-b border-soil-100 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-baseline gap-3">
-            <Link href="/applications" className="font-semibold tracking-tight">
-              Shamba Score
+    <div className="min-h-screen bg-ink-50">
+      <div className="rainbow-rule" />
+
+      <header className="border-b border-ink-200 bg-white">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <Link href="/applications" className="flex items-center gap-2.5">
+              <span
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-base font-bold text-white"
+                aria-hidden="true"
+              >
+                {initial}
+              </span>
+              <span className="leading-tight">
+                <span className="block text-sm font-bold tracking-tight text-ink-900">
+                  {institution.name}
+                </span>
+                <span className="block text-xs text-ink-500">Shamba Score</span>
+              </span>
             </Link>
-            <span className="text-sm text-soil-700">{institution.name}</span>
           </div>
 
-          <nav className="flex items-center gap-4 text-sm">
-            <Link href="/applications" className="hover:underline">
-              Applications
-            </Link>
-            <span className="hidden text-soil-700 sm:inline">
-              {user.email} · {roleLabel}
+          <div className="flex items-center gap-3 text-sm">
+            <span className="hidden text-ink-500 sm:inline">
+              {user.email}
+            </span>
+            <span className="hidden rounded-full bg-plum-50 px-2.5 py-1 text-xs font-semibold text-plum-700 sm:inline">
+              {roleLabel}
             </span>
             <form action="/auth/signout" method="post">
               <button
                 type="submit"
-                className="rounded-md border border-soil-100 px-2.5 py-1 hover:bg-soil-50"
+                className="rounded-lg border border-ink-200 px-3 py-1.5 font-medium text-ink-700 hover:border-ink-300 hover:bg-ink-50"
               >
                 Sign out
               </button>
             </form>
-          </nav>
+          </div>
         </div>
       </header>
 

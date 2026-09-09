@@ -33,12 +33,18 @@ export default async function OnboardingPage() {
   if (claimed) redirect('/applications');
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-12">
+    <main className="flex min-h-screen items-center justify-center bg-ink-50 px-4 py-12">
       <div className="w-full max-w-md">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <div
+          className="flex size-12 items-center justify-center rounded-2xl bg-brand-500 text-2xl"
+          aria-hidden="true"
+        >
+          🏦
+        </div>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-ink-900">
           Set up your institution
         </h1>
-        <p className="mt-2 text-sm text-soil-700">
+        <p className="mt-2 text-sm text-ink-500">
           Signed in as {user.email}. Name the lender, SACCO or dealer you work
           for. Everything you create from here on belongs to it, and no other
           institution can see any of it.

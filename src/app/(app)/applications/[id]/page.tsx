@@ -46,50 +46,53 @@ export default async function ApplicationDetailPage({
 
   return (
     <div>
-      <Link href="/applications" className="text-sm text-soil-700 hover:underline">
+      <Link
+        href="/applications"
+        className="text-sm font-medium text-ink-500 hover:text-brand-700"
+      >
         ← Applications
       </Link>
 
       <div className="mt-2 flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="text-3xl font-bold tracking-tight text-ink-900">
           {data.farmer.name}
         </h1>
         <StatusBadge status={data.status} />
       </div>
 
-      <dl className="mt-6 grid gap-x-8 gap-y-4 rounded-xl border border-soil-100 bg-white p-6 text-sm shadow-sm sm:grid-cols-2">
+      <dl className="mt-6 grid gap-x-8 gap-y-5 rounded-2xl border border-ink-200 bg-white p-6 text-sm sm:grid-cols-2">
         <div>
-          <dt className="text-soil-700">Mobile</dt>
-          <dd className="font-medium">{data.farmer.phone}</dd>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Mobile</dt>
+          <dd className="mt-0.5 font-semibold text-ink-900">{data.farmer.phone}</dd>
         </div>
         <div>
-          <dt className="text-soil-700">Main crop</dt>
-          <dd className="font-medium capitalize">{data.farmer.primary_crop}</dd>
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Main crop</dt>
+          <dd className="mt-0.5 font-semibold capitalize text-ink-900">{data.farmer.primary_crop}</dd>
         </div>
         <div>
-          <dt className="text-soil-700">Farm size</dt>
-          <dd className="font-medium">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Farm size</dt>
+          <dd className="mt-0.5 font-semibold text-ink-900">
             {Number(data.farmer.farm_size_ha).toFixed(2)} ha
           </dd>
         </div>
         <div>
-          <dt className="text-soil-700">Farm location</dt>
-          <dd className="font-medium">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Farm location</dt>
+          <dd className="mt-0.5 font-semibold text-ink-900">
             {data.farmer.location_lat.toFixed(5)},{' '}
             {data.farmer.location_lng.toFixed(5)}
           </dd>
         </div>
         <div>
-          <dt className="text-soil-700">Consent</dt>
-          <dd className="font-medium">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Consent</dt>
+          <dd className="mt-0.5 font-semibold text-ink-900">
             {data.consent_given && data.consent_at
               ? `Recorded ${dateTimeFormat.format(new Date(data.consent_at))}`
               : 'Not recorded'}
           </dd>
         </div>
         <div>
-          <dt className="text-soil-700">Created</dt>
-          <dd className="font-medium">
+          <dt className="text-xs font-semibold uppercase tracking-wide text-ink-500">Created</dt>
+          <dd className="mt-0.5 font-semibold text-ink-900">
             {dateTimeFormat.format(new Date(data.created_at))}
           </dd>
         </div>
@@ -106,11 +109,17 @@ export default async function ApplicationDetailPage({
         {latestScore ? (
           <ScorePanel score={latestScore} />
         ) : (
-          <p className="text-sm text-soil-700">
-            Not scored yet. Running a score gathers satellite, rainfall and
-            mobile-money signals for this farm and explains what drove the
-            result.
-          </p>
+          <div className="rounded-2xl border-2 border-dashed border-sky-100 bg-sky-50 p-6 text-center">
+            <p className="text-2xl" aria-hidden="true">
+              🛰️
+            </p>
+            <p className="mt-2 font-semibold text-ink-900">Not scored yet</p>
+            <p className="mx-auto mt-1 max-w-md text-sm text-ink-500">
+              Running a score gathers satellite, rainfall and mobile-money
+              signals for this farm, then explains in plain language what drove
+              the result.
+            </p>
+          </div>
         )}
       </div>
     </div>

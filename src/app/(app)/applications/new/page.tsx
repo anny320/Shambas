@@ -9,15 +9,15 @@ export default function NewApplicationPage() {
       <div className="mb-6">
         <Link
           href="/applications"
-          className="text-sm text-soil-700 hover:underline"
+          className="text-sm font-medium text-ink-500 hover:text-brand-700"
         >
           ← Applications
         </Link>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">
+        <h1 className="mt-2 text-3xl font-bold tracking-tight text-ink-900">
           New application
         </h1>
-        <p className="mt-1 text-sm text-soil-700">
-          Capture the farmer, pin the farm, and record consent.
+        <p className="mt-1 text-ink-500">
+          Three steps: capture the farmer, pin the farm, record consent.
         </p>
       </div>
       <IntakeForm />

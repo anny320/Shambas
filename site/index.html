@@ -10,43 +10,62 @@
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌾</text></svg>">
 <style>
-  :root {
-    --bg: #f7f5f2;
-    --surface: #ffffff;
-    --ink: #2b2419;
-    --muted: #55483a;
-    --line: #e4ded4;
-    --leaf: #276033;
-    --leaf-bright: #3f8f4f;
-    --leaf-wash: #eef5ef;
-    --amber: #8a6d1f;
-    --amber-wash: #fdf6e3;
-    --maxw: 68rem;
-  }
+  /* =========================================================================
+     Shamba Score — tropical palette.
 
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #16130f;
-      --surface: #1f1b16;
-      --ink: #f0ebe3;
-      --muted: #b8ac9c;
-      --line: #322c24;
-      --leaf: #7cc98c;
-      --leaf-bright: #9bd9a8;
-      --leaf-wash: #1c2a1f;
-      --amber: #d9bd74;
-      --amber-wash: #2a2416;
-    }
+     Four accents, each with a job: green is the product, orange the farm and
+     its climate, teal the data, violet money and decisions. Sections are
+     colour-blocked so the page has rhythm rather than one wash of green.
+
+     Measured rule: the vivid 500s sit near 2.6:1 on white, so they are blocks
+     and rules, never small text. Text uses the 700s, which clear WCAG AA, and
+     white-on-700 buttons clear it too.
+
+     Committed to a single bright look on purpose — this has to read on a
+     phone in daylight — so it declares color-scheme and paints every colour
+     explicitly rather than inheriting.
+     ========================================================================= */
+  :root {
+    color-scheme: light;
+
+    --green-50:  #e6f9f0;
+    --green-100: #c4f0dc;
+    --green-500: #12b76a;
+    --green-700: #07734a;
+    --green-800: #055c3b;
+
+    --orange-50:  #fff3e9;
+    --orange-100: #ffe1c9;
+    --orange-500: #ff7a1a;
+    --orange-700: #b3510a;
+
+    --teal-50:  #e5f8fc;
+    --teal-100: #bfeef8;
+    --teal-500: #06aed4;
+    --teal-700: #046a85;
+
+    --violet-50:  #f1edff;
+    --violet-100: #e0d6ff;
+    --violet-500: #7c4dff;
+    --violet-700: #5326cc;
+
+    --ink-900: #101828;
+    --ink-700: #344054;
+    --ink-500: #667085;
+    --ink-200: #eaecf0;
+    --ink-50:  #f9fafb;
+
+    --white: #ffffff;
+    --maxw: 70rem;
   }
 
   * { box-sizing: border-box; }
-
   html { scroll-behavior: smooth; }
 
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--ink);
+    background: var(--white);
+    color: var(--ink-900);
     font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
       "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -54,233 +73,218 @@
 
   .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
 
-  a { color: var(--leaf); }
+  h1, h2, h3 { line-height: 1.15; letter-spacing: -0.025em; margin: 0; }
 
-  h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; margin: 0; }
-
-  /* ---------------------------------------------------------------- header */
-
-  header.top {
-    border-bottom: 1px solid var(--line);
-    background: var(--surface);
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  header.top .wrap {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
-  }
-  .brand { font-weight: 650; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
-  .brand span { color: var(--leaf-bright); }
-  nav.top-nav { display: flex; gap: 1.25rem; font-size: 0.9rem; }
-  nav.top-nav a { color: var(--muted); text-decoration: none; }
-  nav.top-nav a:hover { color: var(--ink); }
-  @media (max-width: 34rem) { nav.top-nav a.hide-sm { display: none; } }
-
-  /* ------------------------------------------------------------------ hero */
-
-  .hero { padding: 4.5rem 0 3rem; }
-  .eyebrow {
-    display: inline-block;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--leaf);
-    background: var(--leaf-wash);
-    border-radius: 999px;
-    padding: 0.3rem 0.7rem;
-    margin-bottom: 1.25rem;
-  }
-  .hero h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 20ch; }
-  .hero p.lede {
-    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
-    color: var(--muted);
-    max-width: 60ch;
-    margin: 1.25rem 0 0;
-  }
-  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2rem; }
-  .btn {
-    display: inline-block;
-    border-radius: 0.5rem;
-    padding: 0.65rem 1.15rem;
-    font-size: 0.95rem;
-    font-weight: 550;
-    text-decoration: none;
-    border: 1px solid transparent;
-  }
-  .btn-primary { background: var(--leaf); color: #fff; }
-  .btn-primary:hover { background: var(--leaf-bright); }
-  @media (prefers-color-scheme: dark) { .btn-primary { color: #102014; } }
-  .btn-ghost { border-color: var(--line); color: var(--ink); background: var(--surface); }
-  .btn-ghost:hover { border-color: var(--muted); }
-
-  /* ------------------------------------------------------------- statboard */
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
-    overflow: hidden;
-    margin: 3rem 0 0;
-  }
-  .stat { background: var(--surface); padding: 1.4rem 1.25rem; }
-  .stat b {
-    display: block;
-    font-size: 1.9rem;
-    font-weight: 650;
-    letter-spacing: -0.03em;
-    font-variant-numeric: tabular-nums;
-  }
-  .stat span { display: block; font-size: 0.87rem; color: var(--muted); margin-top: 0.3rem; }
-
-  /* --------------------------------------------------------------- section */
-
-  section {
-    padding: 3.5rem 0;
-    /* The header is sticky, so an anchor jump would otherwise land with the
-       section heading hidden underneath it. */
-    scroll-margin-top: 4rem;
-  }
-  section > .wrap > h2 { font-size: clamp(1.5rem, 3.2vw, 2rem); }
-  .section-lede { color: var(--muted); max-width: 62ch; margin: 0.9rem 0 0; }
-
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
-  }
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 0.75rem;
-    padding: 1.4rem;
-  }
-  .card h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
-  .card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
-  .card .num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.7rem;
-    height: 1.7rem;
-    border-radius: 999px;
-    background: var(--leaf-wash);
-    color: var(--leaf);
-    font-size: 0.85rem;
-    font-weight: 650;
-    margin-bottom: 0.85rem;
+  /* The signature device: one four-colour rule tying the accents together. */
+  .rainbow {
+    height: 5px;
+    background: linear-gradient(90deg,
+      var(--green-500) 0 25%, var(--orange-500) 25% 50%,
+      var(--teal-500) 50% 75%, var(--violet-500) 75% 100%);
   }
 
-  /* ----------------------------------------------------------- signal grid */
+  :where(a, button):focus-visible {
+    outline: 3px solid var(--violet-500);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
 
-  table.signals {
-    width: 100%;
-    /* Without a floor the columns squeeze to nothing on a phone instead of
-       letting the wrapper scroll. */
-    min-width: 40rem;
-    border-collapse: collapse;
-    margin-top: 2rem;
-    font-size: 0.94rem;
-  }
-  .table-scroll {
-    overflow-x: auto;
-    /* Keeps the scrollable region visually attached to the section. */
-    margin-inline: -0.25rem;
-    padding-inline: 0.25rem;
-  }
-  table.signals th, table.signals td {
-    text-align: left;
-    padding: 0.85rem 1rem;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-  }
-  table.signals th {
-    font-size: 0.76rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--muted);
-    font-weight: 600;
-  }
-  table.signals td:first-child { font-weight: 550; white-space: nowrap; }
-  table.signals tr:last-child td { border-bottom: 0; }
-  .pill {
-    display: inline-block;
-    font-size: 0.74rem;
-    font-weight: 600;
-    padding: 0.15rem 0.5rem;
-    border-radius: 999px;
-    white-space: nowrap;
-  }
-  .pill-live { background: var(--leaf-wash); color: var(--leaf); }
-  .pill-mock { background: var(--amber-wash); color: var(--amber); }
+  /* ------------------------------------------------------------------ header */
 
-  /* -------------------------------------------------------------- emphasis */
+  header.top { background: var(--white); border-bottom: 1px solid var(--ink-200);
+               position: sticky; top: 0; z-index: 20; }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between;
+                     gap: 1rem; padding-block: 0.85rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none;
+           color: var(--ink-900); font-weight: 800; letter-spacing: -0.03em; font-size: 1.05rem; }
+  .brand .mark { width: 2rem; height: 2rem; border-radius: 0.55rem; background: var(--green-500);
+                 display: grid; place-items: center; font-size: 1.05rem; }
+  nav.top-nav { display: flex; align-items: center; gap: 1.4rem; font-size: 0.92rem; font-weight: 550; }
+  nav.top-nav a { color: var(--ink-700); text-decoration: none; }
+  nav.top-nav a:hover { color: var(--green-700); }
+  nav.top-nav a.nav-cta { background: var(--green-700); color: #fff; padding: 0.5rem 1rem;
+                          border-radius: 0.5rem; }
+  nav.top-nav a.nav-cta:hover { background: var(--green-800); color: #fff; }
+  @media (max-width: 46rem) { nav.top-nav a.hide-sm { display: none; } }
 
-  .callout {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--leaf);
-    border-radius: 0.5rem;
-    padding: 1.4rem 1.5rem;
-    margin-top: 2rem;
+  /* -------------------------------------------------------------------- hero */
+
+  .hero { padding: 4rem 0 3rem; }
+  .hero-grid { display: grid; gap: 3rem; align-items: center; }
+  @media (min-width: 60rem) {
+    .hero-grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
   }
-  .callout h3 { font-size: 1.02rem; margin-bottom: 0.5rem; }
-  .callout p { margin: 0; color: var(--muted); font-size: 0.95rem; }
-  .callout p + p { margin-top: 0.75rem; }
 
-  .band { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  /* A miniature of the real score panel. The page claims the output is
+     explainable, so it shows one rather than describing it. */
+  .scorecard { background: var(--white); border: 1px solid var(--ink-200);
+               border-radius: 1.1rem; overflow: hidden;
+               box-shadow: 0 18px 40px -24px rgba(16, 24, 40, 0.35); }
+  .scorecard .cap { height: 6px; background: var(--green-500); display: block; }
+  .scorecard .inner { padding: 1.5rem; }
+  .sc-row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .sc-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+              text-transform: uppercase; color: var(--ink-500); }
+  .sc-score { font-size: 3.4rem; font-weight: 800; line-height: 1;
+              letter-spacing: -0.04em; color: var(--green-700);
+              font-variant-numeric: tabular-nums; }
+  .sc-band { background: var(--green-100); color: var(--green-700);
+             border-radius: 999px; padding: 0.3rem 0.75rem;
+             font-size: 0.8rem; font-weight: 700; white-space: nowrap; }
+  .sc-meter { position: relative; height: 10px; border-radius: 999px; margin-top: 1.1rem;
+              background: linear-gradient(90deg, #f04438, var(--orange-500), var(--green-500)); }
+  .sc-marker { position: absolute; top: 50%; left: 75%; width: 20px; height: 20px;
+               transform: translate(-50%, -50%); border-radius: 999px;
+               background: var(--white); border: 3px solid var(--ink-900); }
+  .sc-scale { display: flex; justify-content: space-between; margin-top: 0.4rem;
+              font-size: 0.72rem; color: var(--ink-500); font-variant-numeric: tabular-nums; }
+  .sc-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-top: 1.2rem; }
+  .sc-tile { border-radius: 0.7rem; padding: 0.8rem 0.9rem; }
+  .sc-tile.pd { background: var(--ink-50); }
+  .sc-tile.terms { background: var(--violet-50); }
+  .sc-tile .k { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+                text-transform: uppercase; color: var(--ink-500); }
+  .sc-tile.terms .k { color: var(--violet-700); }
+  .sc-tile .v { font-size: 1.35rem; font-weight: 800; margin-top: 0.2rem;
+                font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .sc-tile.terms .v { color: var(--violet-700); }
+  .sc-factors { margin: 1.2rem 0 0; padding: 0; list-style: none;
+                border-top: 1px solid var(--ink-200); padding-top: 1rem; }
+  .sc-factors li { display: flex; justify-content: space-between; gap: 0.75rem;
+                   font-size: 0.85rem; margin-bottom: 0.55rem; color: var(--ink-700); }
+  .sc-factors li:last-child { margin-bottom: 0; }
+  .sc-pts { font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .sc-pos { color: var(--green-700); }
+  .sc-neg { color: #a62018; }
+  .sc-note { margin: 1rem 0 0; font-size: 0.74rem; color: var(--ink-500); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.78rem;
+             font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+             color: var(--violet-700); background: var(--violet-50);
+             border-radius: 999px; padding: 0.4rem 0.85rem; margin-bottom: 1.4rem; }
+  .hero h1 { font-size: clamp(2.2rem, 4.6vw, 3.5rem); max-width: 24ch; font-weight: 800; }
+  .hero h1 .hl { color: var(--green-700); }
+  .hero p.lede { font-size: clamp(1.05rem, 2.1vw, 1.3rem); color: var(--ink-700);
+                 max-width: 58ch; margin: 1.4rem 0 0; }
 
-  ul.plain { margin: 1.5rem 0 0; padding: 0; list-style: none; }
-  ul.plain li {
-    padding-left: 1.6rem;
-    position: relative;
-    margin-bottom: 0.85rem;
-    color: var(--muted);
-  }
-  ul.plain li::before {
-    content: "";
-    position: absolute;
-    left: 0.35rem;
-    top: 0.62rem;
-    width: 0.45rem;
-    height: 0.45rem;
-    border-radius: 999px;
-    background: var(--leaf-bright);
-  }
-  ul.plain li b { color: var(--ink); font-weight: 600; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 2.2rem; }
+  .btn { display: inline-block; border-radius: 0.6rem; padding: 0.8rem 1.4rem;
+         font-size: 0.98rem; font-weight: 650; text-decoration: none;
+         border: 2px solid transparent; }
+  .btn-primary { background: var(--green-700); color: #fff; }
+  .btn-primary:hover { background: var(--green-800); }
+  .btn-ghost { border-color: var(--ink-200); color: var(--ink-900); background: var(--white); }
+  .btn-ghost:hover { border-color: var(--violet-500); color: var(--violet-700); }
 
-  /* ---------------------------------------------------------------- footer */
+  /* --------------------------------------------------------------- statboard */
 
-  footer {
-    border-top: 1px solid var(--line);
-    padding: 2.5rem 0 3.5rem;
-    font-size: 0.88rem;
-    color: var(--muted);
-  }
-  footer p { margin: 0 0 0.6rem; }
-  footer a { color: var(--leaf); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+           gap: 1rem; margin-top: 3rem; }
+  .stat { border: 1px solid var(--ink-200); border-radius: 0.9rem; overflow: hidden;
+          background: var(--white); }
+  .stat .cap { height: 5px; display: block; }
+  .stat .body { padding: 1.25rem; }
+  .stat b { display: block; font-size: 2.1rem; font-weight: 800; letter-spacing: -0.04em;
+            font-variant-numeric: tabular-nums; line-height: 1.1; }
+  .stat span.lbl { display: block; font-size: 0.87rem; color: var(--ink-500); margin-top: 0.4rem; }
+  .s-green .cap { background: var(--green-500); } .s-green b { color: var(--green-700); }
+  .s-orange .cap { background: var(--orange-500); } .s-orange b { color: var(--orange-700); }
+  .s-teal .cap { background: var(--teal-500); } .s-teal b { color: var(--teal-700); }
+  .s-violet .cap { background: var(--violet-500); } .s-violet b { color: var(--violet-700); }
+
+  /* ----------------------------------------------------------------- section */
+
+  section { padding: 4rem 0; scroll-margin-top: 4.5rem; }
+  section.tint-green { background: var(--green-50); }
+  section.tint-orange { background: var(--orange-50); }
+  section.tint-teal { background: var(--teal-50); }
+  section.tint-violet { background: var(--violet-50); }
+
+  .kicker { display: inline-block; font-size: 0.76rem; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            padding: 0.35rem 0.75rem; border-radius: 999px; margin-bottom: 1rem; }
+  .k-green { background: var(--green-100); color: var(--green-700); }
+  .k-orange { background: var(--orange-100); color: var(--orange-700); }
+  .k-teal { background: var(--teal-100); color: var(--teal-700); }
+  .k-violet { background: var(--violet-100); color: var(--violet-700); }
+
+  section > .wrap > h2 { font-size: clamp(1.7rem, 3.6vw, 2.5rem); font-weight: 800; }
+  .section-lede { color: var(--ink-700); max-width: 60ch; margin: 1rem 0 0; font-size: 1.05rem; }
+
+  /* ------------------------------------------------------------------- cards */
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+           gap: 1.1rem; margin-top: 2.2rem; }
+  .card { background: var(--white); border: 1px solid var(--ink-200);
+          border-radius: 1rem; padding: 1.6rem; }
+  .card h3 { font-size: 1.08rem; margin-bottom: 0.55rem; font-weight: 700; }
+  .card p { margin: 0; color: var(--ink-500); font-size: 0.95rem; }
+  .card .num { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem;
+               border-radius: 0.65rem; font-size: 1rem; font-weight: 800;
+               margin-bottom: 1rem; }
+  .n-green { background: var(--green-100); color: var(--green-700); }
+  .n-orange { background: var(--orange-100); color: var(--orange-700); }
+  .n-teal { background: var(--teal-100); color: var(--teal-700); }
+  .n-violet { background: var(--violet-100); color: var(--violet-700); }
+
+  /* ------------------------------------------------------------------ table */
+
+  .table-scroll { overflow-x: auto; margin-top: 2.2rem;
+                  border: 1px solid var(--ink-200); border-radius: 1rem;
+                  background: var(--white); }
+  table.signals { width: 100%; min-width: 42rem; border-collapse: collapse; font-size: 0.95rem; }
+  table.signals th, table.signals td { text-align: left; padding: 1rem 1.15rem;
+                                       border-bottom: 1px solid var(--ink-200); vertical-align: top; }
+  table.signals thead th { font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.07em;
+                           color: var(--ink-500); font-weight: 700; background: var(--ink-50); }
+  table.signals td:first-child { font-weight: 700; white-space: nowrap; }
+  table.signals tbody tr:last-child td { border-bottom: 0; }
+  .pill { display: inline-block; font-size: 0.75rem; font-weight: 700;
+          padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap; }
+  .pill-live { background: var(--green-100); color: var(--green-700); }
+  .pill-mock { background: var(--orange-100); color: var(--orange-700); }
+
+  /* --------------------------------------------------------------- callout */
+
+  .callout { background: var(--white); border: 2px solid var(--orange-100);
+             border-radius: 1rem; padding: 1.6rem; margin-top: 2rem; }
+  .callout h3 { font-size: 1.05rem; margin-bottom: 0.6rem; color: var(--orange-700); font-weight: 700; }
+  .callout p { margin: 0; color: var(--ink-700); font-size: 0.97rem; }
+
+  /* ------------------------------------------------------------------- list */
+
+  ul.plain { margin: 2rem 0 0; padding: 0; list-style: none; }
+  ul.plain li { padding-left: 2.2rem; position: relative; margin-bottom: 1.1rem;
+                color: var(--ink-700); }
+  ul.plain li::before { content: "✓"; position: absolute; left: 0; top: 0.1rem;
+                        width: 1.5rem; height: 1.5rem; border-radius: 999px;
+                        background: var(--green-500); color: #fff; font-size: 0.8rem;
+                        font-weight: 800; display: grid; place-items: center; }
+  ul.plain li b { color: var(--ink-900); font-weight: 700; }
+  ul.status li::before { background: var(--teal-500); content: "→"; }
+
+  /* ----------------------------------------------------------------- footer */
+
+  footer { border-top: 1px solid var(--ink-200); padding: 2.5rem 0 3.5rem;
+           font-size: 0.88rem; color: var(--ink-500); background: var(--ink-50); }
+  footer p { margin: 0 0 0.7rem; max-width: 70ch; }
+  footer a { color: var(--green-700); font-weight: 600; }
 </style>
 </head>
 <body>
 
+<div class="rainbow"></div>
+
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#top">Shamba<span> Score</span></a>
+    <a class="brand" href="#top">
+      <span class="mark" aria-hidden="true">🌾</span>
+      Shamba Score
+    </a>
     <nav class="top-nav">
       <a href="#how" class="hide-sm">How it works</a>
       <a href="#signals" class="hide-sm">Signals</a>
-      <a href="#explainable">Explainability</a>
-      <a href="https://github.com/anny320/Shambas">Code</a>
+      <a href="#explainable" class="hide-sm">Explainability</a>
+      <a href="https://github.com/anny320/Shambas" class="nav-cta">View the code</a>
     </nav>
   </div>
 </header>
@@ -288,8 +292,10 @@
 <main id="top">
 
   <div class="wrap hero">
+   <div class="hero-grid">
+    <div>
     <span class="eyebrow">B2B decisioning · Kenya first</span>
-    <h1>Make an unscoreable farmer scoreable in minutes.</h1>
+    <h1>Make an unscoreable farmer <span class="hl">scoreable in minutes.</span></h1>
     <p class="lede">
       Smallholder farmers are locked out of credit because they have no formal
       credit history and no collateral, so lenders treat them as unscoreable
@@ -301,34 +307,75 @@
       <a class="btn btn-primary" href="https://github.com/anny320/Shambas">Read the code</a>
       <a class="btn btn-ghost" href="https://github.com/anny320/Shambas/blob/main/docs/scoring-model.md">How the model works</a>
     </div>
+    </div>
+
+    <!-- An illustrative result, not a real applicant. -->
+    <div class="scorecard" role="img"
+         aria-label="Example result: score 712, low risk, 7.4 percent chance of default, 25,000 shillings recommended over 6 months, with the factors that drove it.">
+      <span class="cap"></span>
+      <div class="inner">
+        <div class="sc-row">
+          <div>
+            <div class="sc-label">Credit score</div>
+            <div class="sc-score">712</div>
+          </div>
+          <span class="sc-band">Low risk</span>
+        </div>
+
+        <div class="sc-meter"><span class="sc-marker"></span></div>
+        <div class="sc-scale"><span>300</span><span>850</span></div>
+
+        <div class="sc-split">
+          <div class="sc-tile pd">
+            <div class="k">Chance of default</div>
+            <div class="v">7.4%</div>
+          </div>
+          <div class="sc-tile terms">
+            <div class="k">Recommended</div>
+            <div class="v">KES 25,000</div>
+          </div>
+        </div>
+
+        <ul class="sc-factors">
+          <li><span>Vegetation above the regional norm</span><span class="sc-pts sc-pos">+64</span></li>
+          <li><span>Dependable rainfall at this location</span><span class="sc-pts sc-pos">+41</span></li>
+          <li><span>Steady mobile-money inflow</span><span class="sc-pts sc-pos">+28</span></li>
+          <li><span>Two drought seasons in the last five</span><span class="sc-pts sc-neg">&minus;33</span></li>
+        </ul>
+
+        <p class="sc-note">Illustrative output. Not a real applicant.</p>
+      </div>
+    </div>
+   </div>
 
     <div class="stats">
-      <div class="stat">
-        <b>~70%</b>
-        <span>of Kenya's farmers are smallholders</span>
+      <div class="stat s-green">
+        <span class="cap"></span>
+        <div class="body"><b>~70%</b><span class="lbl">of Kenya&rsquo;s farmers are smallholders</span></div>
       </div>
-      <div class="stat">
-        <b>~⅓</b>
-        <span>of Kenyan GDP comes from agriculture</span>
+      <div class="stat s-orange">
+        <span class="cap"></span>
+        <div class="body"><b>~&#8531;</b><span class="lbl">of Kenyan GDP comes from agriculture</span></div>
       </div>
-      <div class="stat">
-        <b>~$65B</b>
-        <span>estimated smallholder finance gap across Africa</span>
+      <div class="stat s-teal">
+        <span class="cap"></span>
+        <div class="body"><b>~$65B</b><span class="lbl">estimated smallholder finance gap across Africa</span></div>
       </div>
-      <div class="stat">
-        <b>&lt; 2 min</b>
-        <span>target time to a decision, against days by hand</span>
+      <div class="stat s-violet">
+        <span class="cap"></span>
+        <div class="body"><b>&lt;2 min</b><span class="lbl">target time to a decision, against days by hand</span></div>
       </div>
     </div>
   </div>
 
-  <section class="band">
+  <section class="tint-green">
     <div class="wrap">
+      <span class="kicker k-green">The position</span>
       <h2>We are not a lender.</h2>
       <p class="section-lede">
         Shamba Score is the decisioning layer that licensed institutions use.
         They hold the risk, the capital and the licence. We sell the brain, not
-        the balance sheet — which is what keeps the heaviest regulation with
+        the balance sheet &mdash; which is what keeps the heaviest regulation with
         our customers and makes the product buildable by a small team.
       </p>
       <p class="section-lede">
@@ -342,6 +389,7 @@
 
   <section id="how">
     <div class="wrap">
+      <span class="kicker k-teal">The flow</span>
       <h2>How it works</h2>
       <p class="section-lede">
         Three steps, all of which a loan officer can complete on a phone in the
@@ -350,7 +398,7 @@
 
       <div class="cards">
         <div class="card">
-          <span class="num">1</span>
+          <span class="num n-teal">1</span>
           <h3>Capture the farmer and the farm</h3>
           <p>
             Name, phone, crop, hectarage, and the farm pinned on a map.
@@ -360,21 +408,21 @@
           </p>
         </div>
         <div class="card">
-          <span class="num">2</span>
+          <span class="num n-orange">2</span>
           <h3>Gather alternative data</h3>
           <p>
             Satellite vegetation over the plot, rainfall history for the
-            location, and — where the farmer authorises it — a summary of
+            location, and &mdash; where the farmer authorises it &mdash; a summary of
             mobile-money activity. Each source sits behind one interface, so
             any of them can be swapped or go dark without breaking the rest.
           </p>
         </div>
         <div class="card">
-          <span class="num">3</span>
+          <span class="num n-violet">3</span>
           <h3>Return a decision the officer can defend</h3>
           <p>
             A score, a default probability, a recommended amount and term, a
-            confidence level, and the specific factors that drove the result —
+            confidence level, and the specific factors that drove the result &mdash;
             each in one plain sentence, with the points it contributed.
           </p>
         </div>
@@ -382,8 +430,9 @@
     </div>
   </section>
 
-  <section id="signals" class="band">
+  <section id="signals" class="tint-orange">
     <div class="wrap">
+      <span class="kicker k-orange">The inputs</span>
       <h2>The signals</h2>
       <p class="section-lede">
         Everything runs end to end on mock data today, so the product exists
@@ -423,7 +472,7 @@
             <tr>
               <td>Farm profile</td>
               <td>Captured by the loan officer</td>
-              <td>Crop, hectarage and location — the only data the farmer supplies</td>
+              <td>Crop, hectarage and location &mdash; the only data the farmer supplies</td>
               <td><span class="pill pill-live">Live</span></td>
             </tr>
           </tbody>
@@ -444,10 +493,11 @@
 
   <section id="explainable">
     <div class="wrap">
+      <span class="kicker k-green">The hard part</span>
       <h2>Explainable enough to underwrite on</h2>
       <p class="section-lede">
         At launch there is no labelled repayment data, so there is nothing to
-        train on — a model fitted to zero observed defaults would be a black box
+        train on &mdash; a model fitted to zero observed defaults would be a black box
         that had learnt nothing. The first version is a transparent,
         expert-weighted model instead: every weight is visible, arguable and
         tunable, and every score traces back to the inputs that produced it.
@@ -475,7 +525,7 @@
           assessment can be reconstructed months later.
         </li>
         <li>
-          <b>A recommendation can be "decide this by hand".</b> When the
+          <b>A recommendation can be &ldquo;decide this by hand&rdquo;.</b> When the
           evidence is too thin or the risk too high, the model declines to
           suggest terms rather than inventing a number.
         </li>
@@ -483,8 +533,9 @@
     </div>
   </section>
 
-  <section class="band">
+  <section class="tint-violet">
     <div class="wrap">
+      <span class="kicker k-violet">The buyers</span>
       <h2>Who it is for</h2>
       <div class="cards">
         <div class="card">
@@ -512,15 +563,16 @@
     </div>
   </section>
 
-  <section>
+  <section id="status">
     <div class="wrap">
+      <span class="kicker k-teal">Straight talk</span>
       <h2>Where the project actually is</h2>
       <p class="section-lede">
         Being straight about this matters more than the pitch. Shamba Score is
         in active development. There is no pilot institution, no live external
         data source and no lending yet.
       </p>
-      <ul class="plain">
+      <ul class="plain status">
         <li><b>Built:</b> multi-tenant accounts with database-enforced isolation, farmer and application intake with recorded consent, the pluggable data-adapter layer with mock sources, and the scoring engine with its explanation panel.</li>
         <li><b>Next:</b> the approve and decline flow with its audit snapshot, a portfolio view, and the first live data source.</li>
         <li><b>Then:</b> repayment-outcome capture, which is what eventually makes a trained model possible.</li>
@@ -542,11 +594,11 @@
     </p>
     <p>
       Figures on this page are published estimates for the sector, not
-      measurements of this product. "Shamba" is Swahili for farm.
+      measurements of this product. &ldquo;Shamba&rdquo; is Swahili for farm.
     </p>
     <p>
-      <a href="https://github.com/anny320/Shambas">Source</a> ·
-      <a href="https://github.com/anny320/Shambas/blob/main/docs/scoring-model.md">Scoring model</a> ·
+      <a href="https://github.com/anny320/Shambas">Source</a> &middot;
+      <a href="https://github.com/anny320/Shambas/blob/main/docs/scoring-model.md">Scoring model</a> &middot;
       <a href="https://github.com/anny320/Shambas/blob/main/PRD.md">Product spec</a>
     </p>
   </div>

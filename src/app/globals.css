@@ -1,32 +1,123 @@
 @import 'tailwindcss';
 @import 'leaflet/dist/leaflet.css';
 
-@theme {
-  --color-soil-50: #f7f5f2;
-  --color-soil-100: #e9e4dc;
-  --color-soil-700: #55483a;
-  --color-soil-900: #2b2419;
+/* ===========================================================================
+   Shamba Score design tokens
+   ---------------------------------------------------------------------------
+   Four accent colours, each carrying a meaning so colour is never decorative:
 
-  --color-leaf-50: #f0f7f1;
-  --color-leaf-100: #dcedde;
-  --color-leaf-500: #3f8f4f;
-  --color-leaf-600: #337a41;
-  --color-leaf-700: #276033;
+     brand  (green)   the product, primary actions, positive signals
+     sun    (orange)  the farm and its climate, warnings, work in progress
+     sky    (teal)    data and measurement, anything scored or observed
+     plum   (violet)  money, terms and decisions
+
+   Usage rule, from measured contrast — the vivid 500s read at about 2.6:1 on
+   white, so they are FILLS AND BLOCKS, never small text:
+
+     50 / 100   tinted backgrounds and badges
+     500        big blocks, rules, icon fills, large numerals
+     700        text on white, and button fills carrying white text
+     800        hover state for those buttons
+
+   Every pairing used in the app was checked against WCAG AA before being
+   adopted. Badge text (700 on 50) clears 4.5:1, button text (white on 700)
+   clears 5.1:1, and large numerals (600 on white) clear 3:1.
+   =========================================================================== */
+
+@theme {
+  /* brand — green */
+  --color-brand-50: #e6f9f0;
+  --color-brand-100: #c4f0dc;
+  --color-brand-500: #12b76a;
+  --color-brand-600: #0e9f5c;
+  --color-brand-700: #07734a;
+  --color-brand-800: #055c3b;
+
+  /* sun — orange */
+  --color-sun-50: #fff3e9;
+  --color-sun-100: #ffe1c9;
+  --color-sun-500: #ff7a1a;
+  --color-sun-600: #e35f05;
+  --color-sun-700: #b3510a;
+  --color-sun-800: #8f400a;
+
+  /* sky — teal */
+  --color-sky-50: #e5f8fc;
+  --color-sky-100: #bfeef8;
+  --color-sky-500: #06aed4;
+  --color-sky-600: #0590b0;
+  --color-sky-700: #046a85;
+  --color-sky-800: #03566b;
+
+  /* plum — violet */
+  --color-plum-50: #f1edff;
+  --color-plum-100: #e0d6ff;
+  --color-plum-500: #7c4dff;
+  --color-plum-600: #6836f0;
+  --color-plum-700: #5326cc;
+  --color-plum-800: #421ea3;
+
+  /* danger — red */
+  --color-danger-50: #fef0ef;
+  --color-danger-100: #fdd9d6;
+  --color-danger-500: #f04438;
+  --color-danger-600: #d92d20;
+  --color-danger-700: #a62018;
+
+  /* neutrals */
+  --color-ink-50: #f9fafb;
+  --color-ink-100: #eaecf0;
+  --color-ink-200: #dfe3e8;
+  --color-ink-300: #d0d5dd;
+  --color-ink-500: #667085;
+  --color-ink-700: #344054;
+  --color-ink-900: #101828;
 }
 
+/*
+ * A deliberate single look. The whole point of this palette is a bright, warm
+ * page that reads in daylight on a phone in a field, so it commits to light
+ * rather than muting itself in dark mode. Colours are painted explicitly so
+ * nothing is inherited from the host.
+ */
 :root {
   color-scheme: light;
 }
 
 body {
-  background-color: var(--color-soil-50);
-  color: var(--color-soil-900);
+  background-color: #ffffff;
+  color: var(--color-ink-900);
+}
+
+/* Leaflet builds its own stacking context; without this the map paints over
+   dropdowns and dialogs. */
+.leaflet-container {
+  z-index: 0;
 }
 
 /*
- * Leaflet sets its own stacking context; without this the map can paint over
- * dropdowns and dialogs.
+ * The signature device: a thin four-colour rule. Used at the top of the app
+ * shell and under the hero so the accent set reads as one system rather than
+ * as four unrelated colours.
  */
-.leaflet-container {
-  z-index: 0;
+.rainbow-rule {
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    var(--color-brand-500) 0%,
+    var(--color-brand-500) 25%,
+    var(--color-sun-500) 25%,
+    var(--color-sun-500) 50%,
+    var(--color-sky-500) 50%,
+    var(--color-sky-500) 75%,
+    var(--color-plum-500) 75%,
+    var(--color-plum-500) 100%
+  );
+}
+
+/* Consistent, visible focus for keyboard users on every interactive element. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-plum-500);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

@@ -51,21 +51,24 @@ export function ScoreButton({
         type="button"
         onClick={runScore}
         disabled={pending}
-        className="rounded-md bg-leaf-600 px-4 py-2 text-sm font-medium text-white hover:bg-leaf-700 disabled:opacity-60"
+        className="rounded-lg bg-sky-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-sky-800 disabled:opacity-60"
       >
         {pending
           ? 'Scoring…'
           : alreadyScored
             ? 'Score again'
-            : 'Run credit score'}
+            : '⚡ Run credit score'}
       </button>
       {alreadyScored && !pending && (
-        <span className="text-sm text-soil-700">
+        <span className="text-sm text-ink-500">
           Re-scoring keeps the earlier assessment in the audit trail.
         </span>
       )}
       {error && (
-        <span role="alert" className="text-sm text-red-700">
+        <span
+          role="alert"
+          className="rounded-lg bg-danger-50 px-3 py-1.5 text-sm font-medium text-danger-700"
+        >
           {error}
         </span>
       )}

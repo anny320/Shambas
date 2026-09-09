@@ -15,7 +15,7 @@ import {
 const FarmMap = dynamic(() => import('@/components/farm-map'), {
   ssr: false,
   loading: () => (
-    <div className="flex h-72 items-center justify-center rounded-md border border-soil-100 bg-white text-sm text-soil-700">
+    <div className="flex h-72 items-center justify-center rounded-md border border-ink-200 bg-white text-sm text-ink-500">
       Loading map…
     </div>
   ),
@@ -136,20 +136,32 @@ export function IntakeForm() {
   }
 
   const field =
-    'mt-1 w-full rounded-md border border-soil-100 px-3 py-2 text-sm outline-none focus:border-leaf-500 focus:ring-2 focus:ring-leaf-100';
+    'mt-1.5 w-full rounded-lg border border-ink-200 px-3 py-2.5 text-sm outline-none placeholder:text-ink-300 focus:border-brand-500 focus:ring-4 focus:ring-brand-50';
 
   return (
     <form onSubmit={onSubmit} className="space-y-8" noValidate>
-      <section className="rounded-xl border border-soil-100 bg-white p-6 shadow-sm">
-        <h2 className="text-base font-semibold">Farmer</h2>
-        <p className="mt-1 text-sm text-soil-700">
-          Only what the assessment needs. Do not record a national ID or any
-          account number here.
-        </p>
+      <section className="overflow-hidden rounded-2xl border border-ink-200 bg-white">
+        <div className="h-1 bg-sky-500" aria-hidden="true" />
+        <div className="p-6">
+        <div className="flex items-start gap-3">
+          <span
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sky-50 text-sm font-bold text-sky-700"
+            aria-hidden="true"
+          >
+            1
+          </span>
+          <div>
+            <h2 className="text-lg font-bold text-ink-900">Farmer</h2>
+            <p className="mt-1 text-sm text-ink-500">
+              Only what the assessment needs. Do not record a national ID or any
+              account number here.
+            </p>
+          </div>
+        </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="farmerName" className="block text-sm font-medium">
+            <label htmlFor="farmerName" className="block text-sm font-semibold">
               Full name
             </label>
             <input
@@ -160,12 +172,14 @@ export function IntakeForm() {
               aria-invalid={Boolean(errors['farmerName'])}
             />
             {errors['farmerName'] && (
-              <p className="mt-1 text-sm text-red-700">{errors['farmerName']}</p>
+              <p className="mt-1.5 text-sm font-medium text-danger-700">
+                {errors['farmerName']}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium">
+            <label htmlFor="phone" className="block text-sm font-semibold">
               Mobile number
             </label>
             <input
@@ -178,18 +192,33 @@ export function IntakeForm() {
               aria-invalid={Boolean(errors['phone'])}
             />
             {errors['phone'] && (
-              <p className="mt-1 text-sm text-red-700">{errors['phone']}</p>
+              <p className="mt-1.5 text-sm font-medium text-danger-700">
+                {errors['phone']}
+              </p>
             )}
           </div>
         </div>
+        </div>
       </section>
 
-      <section className="rounded-xl border border-soil-100 bg-white p-6 shadow-sm">
-        <h2 className="text-base font-semibold">Farm</h2>
-        <p className="mt-1 text-sm text-soil-700">
-          Tap the map where the farm is, or drag the pin to adjust. The
-          location drives the satellite and weather signals.
-        </p>
+      <section className="overflow-hidden rounded-2xl border border-ink-200 bg-white">
+        <div className="h-1 bg-sun-500" aria-hidden="true" />
+        <div className="p-6">
+        <div className="flex items-start gap-3">
+          <span
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-sun-50 text-sm font-bold text-sun-700"
+            aria-hidden="true"
+          >
+            2
+          </span>
+          <div>
+            <h2 className="text-lg font-bold text-ink-900">Farm</h2>
+            <p className="mt-1 text-sm text-ink-500">
+              Tap the map where the farm is, or drag the pin to adjust. The
+              location drives the satellite and weather signals.
+            </p>
+          </div>
+        </div>
 
         <div className="mt-4">
           <FarmMap
@@ -207,11 +236,11 @@ export function IntakeForm() {
               type="button"
               onClick={useDeviceLocation}
               disabled={locating}
-              className="rounded-md border border-soil-100 px-2.5 py-1 hover:bg-soil-50 disabled:opacity-60"
+              className="rounded-lg border border-sky-100 bg-sky-50 px-3 py-1.5 font-semibold text-sky-700 hover:bg-sky-100 disabled:opacity-60"
             >
-              {locating ? 'Locating…' : 'Use this device’s location'}
+              {locating ? 'Locating…' : '📍 Use this device’s location'}
             </button>
-            <span className="text-soil-700">
+            <span className="text-ink-500">
               {lat !== null && lng !== null
                 ? `Pin at ${lat.toFixed(5)}, ${lng.toFixed(5)}`
                 : 'No pin placed yet'}
@@ -219,16 +248,20 @@ export function IntakeForm() {
           </div>
 
           {errors['locationLat'] && (
-            <p className="mt-1 text-sm text-red-700">{errors['locationLat']}</p>
+            <p className="mt-1.5 text-sm font-medium text-danger-700">
+              {errors['locationLat']}
+            </p>
           )}
           {errors['locationLng'] && (
-            <p className="mt-1 text-sm text-red-700">{errors['locationLng']}</p>
+            <p className="mt-1.5 text-sm font-medium text-danger-700">
+              {errors['locationLng']}
+            </p>
           )}
         </div>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="farmSizeHa" className="block text-sm font-medium">
+            <label htmlFor="farmSizeHa" className="block text-sm font-semibold">
               Farm size (hectares)
             </label>
             <input
@@ -241,12 +274,14 @@ export function IntakeForm() {
               aria-invalid={Boolean(errors['farmSizeHa'])}
             />
             {errors['farmSizeHa'] && (
-              <p className="mt-1 text-sm text-red-700">{errors['farmSizeHa']}</p>
+              <p className="mt-1.5 text-sm font-medium text-danger-700">
+                {errors['farmSizeHa']}
+              </p>
             )}
           </div>
 
           <div>
-            <label htmlFor="primaryCrop" className="block text-sm font-medium">
+            <label htmlFor="primaryCrop" className="block text-sm font-semibold">
               Main crop
             </label>
             <select
@@ -264,53 +299,79 @@ export function IntakeForm() {
               ))}
             </select>
             {errors['primaryCrop'] && (
-              <p className="mt-1 text-sm text-red-700">{errors['primaryCrop']}</p>
+              <p className="mt-1.5 text-sm font-medium text-danger-700">
+                {errors['primaryCrop']}
+              </p>
             )}
           </div>
         </div>
+        </div>
       </section>
 
-      <section className="rounded-xl border border-soil-100 bg-white p-6 shadow-sm">
-        <h2 className="text-base font-semibold">Consent</h2>
-        <label className="mt-3 flex gap-3">
+      <section className="overflow-hidden rounded-2xl border-2 border-plum-100 bg-plum-50">
+        <div className="h-1 bg-plum-500" aria-hidden="true" />
+        <div className="p-6">
+        <div className="flex items-start gap-3">
+          <span
+            className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-plum-100 text-sm font-bold text-plum-700"
+            aria-hidden="true"
+          >
+            3
+          </span>
+          <div>
+            <h2 className="text-lg font-bold text-ink-900">Consent</h2>
+            <p className="mt-1 text-sm text-plum-700">
+              Required by law before any of this farmer’s data is processed.
+            </p>
+          </div>
+        </div>
+
+        <label className="mt-4 flex cursor-pointer gap-3 rounded-xl bg-white p-4">
           <input
             type="checkbox"
             checked={consentGiven}
             onChange={(e) => setConsentGiven(e.target.checked)}
-            className="mt-1 size-4 shrink-0 accent-leaf-600"
+            className="mt-0.5 size-5 shrink-0 accent-plum-600"
             aria-invalid={Boolean(errors['consentGiven'])}
           />
-          <span className="text-sm text-soil-700">{CONSENT_TEXT}</span>
+          <span className="text-sm text-ink-700">{CONSENT_TEXT}</span>
         </label>
         {errors['consentGiven'] && (
-          <p className="mt-2 text-sm text-red-700">{errors['consentGiven']}</p>
+          <p className="mt-2 text-sm font-semibold text-danger-700">
+            {errors['consentGiven']}
+          </p>
         )}
+        </div>
       </section>
 
       {formError && (
-        <p role="alert" className="text-sm text-red-700">
+        <p
+          role="alert"
+          className="rounded-lg bg-danger-50 px-4 py-3 text-sm font-medium text-danger-700"
+        >
           {formError}
         </p>
       )}
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-4">
         <button
           type="submit"
           disabled={pending || !consentGiven}
-          className="rounded-md bg-leaf-600 px-4 py-2 text-sm font-medium text-white hover:bg-leaf-700 disabled:opacity-60"
+          className="rounded-lg bg-brand-700 px-6 py-3 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? 'Submitting…' : 'Submit application'}
         </button>
         {!consentGiven && (
-          <span className="text-sm text-soil-700">
-            Submission stays locked until consent is recorded.
+          <span className="text-sm font-medium text-plum-700">
+            🔒 Locked until consent is recorded in step 3.
           </span>
         )}
       </div>
 
-      <p className="text-xs text-soil-700">
-        Kenya bounds in use: {KENYA_BOUNDS.minLat} to {KENYA_BOUNDS.maxLat}{' '}
-        latitude, {KENYA_BOUNDS.minLng} to {KENYA_BOUNDS.maxLng} longitude.
+      <p className="text-xs text-ink-500">
+        Farm pins must fall inside Kenya: {KENYA_BOUNDS.minLat} to{' '}
+        {KENYA_BOUNDS.maxLat} latitude, {KENYA_BOUNDS.minLng} to{' '}
+        {KENYA_BOUNDS.maxLng} longitude.
       </p>
     </form>
   );
