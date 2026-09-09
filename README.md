@@ -28,51 +28,105 @@ and Shamba Score needs a server for auth, the database and scoring.
 
 ## Local setup
 
-You need Node 18 or newer and a free Supabase project.
+You need Node 18 or newer and a free Supabase account. The whole app runs on
+mock data, so no other API keys are needed.
+
+### 1. Install
 
 ```bash
 npm install
 cp .env.example .env.local
 ```
 
-Fill in `.env.local` from your Supabase dashboard, under
-**Project Settings → Data API**:
+### 2. Create a Supabase project
+
+At [supabase.com](https://supabase.com), create a new project. Pick a region
+near you and save the database password somewhere safe. It takes a minute or
+two to provision.
+
+### 3. Fill in `.env.local`
+
+In the dashboard, go to **Project Settings → Data API** and copy:
 
 | Variable | Where it comes from | Notes |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Project URL | Safe in the browser |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | anon / publishable key | Safe in the browser; every request it makes is constrained by Row Level Security |
-| `SUPABASE_SERVICE_ROLE_KEY` | service role key | **Optional.** Bypasses Row Level Security. Nothing in the app uses it; keep it out unless you add an admin script |
+| `SUPABASE_SERVICE_ROLE_KEY` | service role key | **Leave blank.** Nothing in the app uses it. Onboarding goes through SECURITY DEFINER functions instead, so the app never needs a key that bypasses Row Level Security |
 | `SATELLITE_ADAPTER` | `mock` or `live` | Defaults to `mock` |
 | `WEATHER_ADAPTER` | `mock` or `live` | Defaults to `mock` |
 | `MOBILE_MONEY_ADAPTER` | `mock` or `live` | Defaults to `mock` |
 | `MOCK_ADAPTER_SEED` | any string | Same seed and same farm always give the same features, so demos repeat exactly |
 
-### Running the migrations
+### 4. Run the migrations
 
-The migrations in `supabase/migrations` are plain SQL, applied in filename
-order. Either paste them into the Supabase SQL editor one at a time, or use the
-Supabase CLI:
+Two files in `supabase/migrations`, applied **in filename order**. The first
+builds the schema and all the Row Level Security policies; the second adds the
+`scores` table.
+
+**Simplest — the dashboard.** Open **SQL Editor → New query**, paste the whole
+of `20260909150000_init.sql`, run it, then do the same for
+`20260909160000_scores.sql`. Order matters: the second depends on the first.
+
+**Or the CLI**, if you would rather not paste:
 
 ```bash
+npx supabase login
 npx supabase link --project-ref <your-project-ref>
 npx supabase db push
 ```
 
-Then turn **off** email confirmation while developing, under
-**Authentication → Providers → Email**, so a new account can sign in straight
-away.
+The project ref is the subdomain of your project URL, so for
+`https://abcdefghijkl.supabase.co` it is `abcdefghijkl`.
 
-### Starting the app
+Do **not** apply anything from `supabase/tests`. That directory contains a
+local stand-in for parts of Supabase that your project already has, and
+applying it would conflict.
+
+### 5. Turn off email confirmation (development only)
+
+Under **Authentication → Providers → Email**, switch **Confirm email** off.
+Otherwise your first account cannot sign in until it confirms, and there is no
+mail provider configured yet. Turn it back on before any real pilot.
+
+### 6. Start the app
 
 ```bash
 npm run dev
 ```
 
-Open http://localhost:3000. Create an account, name your institution on the
-onboarding screen, and you become its first administrator. Colleagues join by
-invitation: an admin or head of credit adds a row to `institution_invites` with
-their email, and the invite is claimed automatically on their first sign-in.
+Open http://localhost:3000, create an account, and name your institution on
+the onboarding screen. You become its first administrator, and everything you
+create from then on belongs to that institution and is invisible to any other.
+
+### Adding a colleague
+
+There is no invite email yet, so add the row by hand. In the SQL editor:
+
+```sql
+insert into public.institution_invites (institution_id, email, role, created_by)
+values (
+  (select institution_id from public.users where email = 'you@example.com'),
+  'colleague@example.com',
+  'officer',              -- or 'head_of_credit' or 'admin'
+  (select id from public.users where email = 'you@example.com')
+);
+```
+
+They sign up with that email and the invite is claimed automatically on their
+first sign-in.
+
+### If something does not work
+
+- **"Missing required environment variable"** — `.env.local` is missing or a
+  value is blank. Restart `npm run dev` after editing it; environment variables
+  are read at startup.
+- **Signed in but the page keeps returning to onboarding** — your user has no
+  row in `public.users`. Either the migrations did not run, or institution
+  creation failed. Check for a `users` row for your email.
+- **Every list is empty and inserts fail** — Row Level Security is doing its
+  job and your user has no institution. Same fix as above.
+- **"Email not confirmed"** — step 5.
 
 ## Commands
 
