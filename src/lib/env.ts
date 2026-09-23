@@ -6,6 +6,22 @@
  * inside a request.
  */
 
+/**
+ * Reads a variable, treating a blank value as absent.
+ *
+ * Hosting dashboards routinely CREATE a variable with an empty value — Vercel
+ * pre-fills every name it finds in .env.example when you import a repo. An
+ * empty string is not nullish, so `process.env.X ?? fallback` does not catch
+ * it and the fallback never fires. Everything here goes through this instead,
+ * so "present but blank" behaves the same as "not set".
+ */
+function optional(name: string): string | undefined {
+  const value = process.env[name];
+  if (value === undefined) return undefined;
+  const trimmed = value.trim();
+  return trimmed === '' ? undefined : trimmed;
+}
+
 function required(name: string): string {
   const value = process.env[name];
   if (!value) {
@@ -28,7 +44,7 @@ export function supabaseAnonKey(): string {
 export type AdapterMode = 'mock' | 'live';
 
 function adapterMode(name: string): AdapterMode {
-  const raw = (process.env[name] ?? 'mock').trim().toLowerCase();
+  const raw = (optional(name) ?? 'mock').toLowerCase();
   if (raw === 'mock' || raw === 'live') return raw;
   throw new Error(
     `${name} must be "mock" or "live", got ${JSON.stringify(raw)}.`,
@@ -52,5 +68,5 @@ export function adapterModes(): {
 }
 
 export function mockSeed(): string {
-  return process.env['MOCK_ADAPTER_SEED'] ?? 'shamba-dev';
+  return optional('MOCK_ADAPTER_SEED') ?? 'shamba-dev';
 }
