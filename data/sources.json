@@ -1,0 +1,67 @@
+{
+  "$comment": [
+    "Manifest of the real-world datasets behind the scoring model.",
+    "",
+    "Add a dataset by filling in an entry here, then either:",
+    "  - set \"url\" and run `npm run data:fetch`, or",
+    "  - drop the file into the path given by \"file\" yourself.",
+    "",
+    "Either way `npm run data:status` tells you what is present and what is",
+    "still missing. See data/README.md.",
+    "",
+    "kind: \"reference\" is small and committed to git.",
+    "      \"raw\" is large, gitignored, and fetched or supplied per machine."
+  ],
+  "datasets": [
+    {
+      "id": "input-costs-kes",
+      "name": "Kenyan input costs per hectare, by crop",
+      "kind": "reference",
+      "file": "reference/input-costs-kes.csv",
+      "url": null,
+      "licence": "your own, or your pilot partner's pricing",
+      "feeds": "INPUT_COST_PER_HA_KES in src/scoring/weights.ts",
+      "notes": "The highest-value, lowest-effort item on the list. These figures set the ceiling on every recommended loan and are currently estimates. Replace them with a real agro-dealer price list and every recommendation becomes defensible. Edit the CSV directly; there is nothing to download."
+    },
+    {
+      "id": "crop-yield-norms",
+      "name": "HarvestStat Africa subnational crop yields",
+      "kind": "reference",
+      "file": "reference/crop-yield-norms.csv",
+      "url": null,
+      "licence": "open; confirm the current terms before commercial use",
+      "feeds": "would replace the hardcoded zones in src/adapters/regions.ts",
+      "notes": "Subnational yield, area and production, 33 countries, 94 crops, roughly 1980-2022. Filter to Kenya before committing it; the full dataset is far larger than belongs in this repo."
+    },
+    {
+      "id": "chirps-kenya-monthly",
+      "name": "CHIRPS monthly rainfall, Kenya subset",
+      "kind": "raw",
+      "file": "raw/chirps-kenya-monthly.tif",
+      "url": null,
+      "licence": "public domain",
+      "feeds": "rainfall norms, as a cross-check on Open-Meteo",
+      "notes": "Large raster. Only worth adding if you decide to validate Open-Meteo against it, or need a genuinely public-domain source for commercial use. Using it means storing and querying rasters, which is real infrastructure."
+    },
+    {
+      "id": "isda-soil-kenya",
+      "name": "iSDA soil properties, Kenya subset",
+      "kind": "raw",
+      "file": "raw/isda-soil-kenya.csv",
+      "url": null,
+      "licence": "CC-BY, attribution required",
+      "feeds": "not used yet; would need a new feature and a new weight",
+      "notes": "Adds soil context the model does not currently consider. This is a model change, not just a data load, so it is lower priority than it looks."
+    },
+    {
+      "id": "repayment-outcomes",
+      "name": "Historical repayment outcomes from a pilot lender",
+      "kind": "raw",
+      "file": "raw/repayment-outcomes.csv",
+      "url": null,
+      "licence": "confidential; governed by your agreement with the institution",
+      "feeds": "calibration of every weight in src/scoring/weights.ts",
+      "notes": "NEVER commit this. It is personal financial data about identifiable people and it is gitignored for that reason. A few hundred rows with real outcomes would do more for the model's credibility than every other source combined."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Everything in here is either large, licensed, or confidential, and none of it
+# belongs in git. The manifest in data/sources.json records where each file
+# came from so anyone can reproduce this directory.
+*
+!.gitignore

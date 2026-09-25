@@ -14,7 +14,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "db:migrate": "node scripts/migrate.mjs",
-    "db:status": "node scripts/migrate.mjs --status"
+    "db:status": "node scripts/migrate.mjs --status",
+    "data:status": "node scripts/data.mjs status",
+    "data:fetch": "node scripts/data.mjs fetch"
   },
   "repository": {
     "type": "git",

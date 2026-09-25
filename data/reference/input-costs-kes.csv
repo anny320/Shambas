@@ -1,0 +1,21 @@
+# Indicative cost of one cycle of inputs per hectare, in Kenyan shillings:
+# seed, fertiliser and crop protection.
+#
+# These are order-of-magnitude estimates, NOT researched figures. They set the
+# ceiling on every loan the model recommends, so replacing them with a real
+# price list is the single cheapest improvement available.
+#
+# Keep the crop names exactly as they appear in PRIMARY_CROPS in
+# src/lib/validation/application.ts. "other" is the fallback for anything
+# unrecognised and must stay.
+#
+# Lines beginning with # are ignored.
+crop,cost_per_ha_kes,source
+maize,25000,estimate
+beans,20000,estimate
+sorghum,15000,estimate
+potato,60000,estimate
+tea,45000,estimate
+coffee,40000,estimate
+horticulture,80000,estimate
+other,25000,estimate

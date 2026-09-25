@@ -143,6 +143,8 @@ first sign-in.
 | `npm test` | Unit tests for scoring, adapters and validation |
 | `npm run db:migrate` | Apply pending SQL migrations to the database in `SUPABASE_DB_URL` |
 | `npm run db:status` | Show which migrations are applied and which are pending |
+| `npm run data:status` | Show which real-world datasets are present and which are missing |
+| `npm run data:fetch` | Download the datasets in `data/sources.json` that have a URL |
 | `./supabase/tests/run.sh` | Row Level Security isolation test against a real Postgres |
 
 ## How it is put together
@@ -157,6 +159,10 @@ src/
 supabase/
   migrations/    schema and Row Level Security, applied in filename order
   tests/         the isolation test and its local Postgres shim
+data/
+  sources.json   manifest of real-world datasets, by URL or supplied by hand
+  reference/     small files committed to git
+  raw/           large, licensed or confidential files, never committed
 ```
 
 Two rules shape most of this:
