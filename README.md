@@ -170,7 +170,9 @@ filter by `institution_id`. Row Level Security does it, so a forgotten filter
 cannot leak one institution's farmers to another. `supabase/tests` proves it.
 
 How the scoring model works, and how it handles missing data, is written up in
-[`docs/scoring-model.md`](docs/scoring-model.md).
+[`docs/scoring-model.md`](docs/scoring-model.md). The real-world data sources
+needed to replace the mocks, and how to obtain each, are listed in
+[`docs/data-sources.md`](docs/data-sources.md).
 
 ## Data protection
 
